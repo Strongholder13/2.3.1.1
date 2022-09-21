@@ -6,44 +6,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Repository
 public class UserDAOImp implements UserDAO {
 
-    private final SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Autowired
-    public UserDAOImp(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
     @Override
     public void add(User user) {
-        sessionFactory.getCurrentSession().saveOrUpdate(user);
+        entityManager.persist(user);
     }
 
     @Override
     public void save(User user) {
-        sessionFactory.getCurrentSession().update(user);
+        entityManager.merge(user);
     }
 
     @Override
     public List<User> listUsers() {
-        Query<User> query = sessionFactory.getCurrentSession().createQuery("from User");
-        return query.getResultList();
+        List<User> list = entityManager.createQuery("SELECT user FROM User user", User.class).getResultList();
+        return list;
     }
 
     @Override
     public User getUser(int id) {
-        User user = sessionFactory.getCurrentSession().get(User.class, id);
+        User user = entityManager.find(User.class, id);
         return user;
     }
 
     @Override
     public void deleteUser(int id) {
-        Query<User> query = sessionFactory.getCurrentSession().createQuery("delete from User WHERE id =:userId");
-        query.setParameter("userId", id);
-        query.executeUpdate();
+        User user = entityManager.find(User.class, id);
+        entityManager.remove(user);
     }
 
 }

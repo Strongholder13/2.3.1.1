@@ -40,12 +40,12 @@ public class UserController {
         return "/edit";
     }
 
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user){
         userService.update(user);
         return "redirect:/";
     }
-    @RequestMapping("/delete")
+    @GetMapping("/delete")
     public String delete(@RequestParam("id") int id) {
         userService.delete(id);
         return "redirect:/";
