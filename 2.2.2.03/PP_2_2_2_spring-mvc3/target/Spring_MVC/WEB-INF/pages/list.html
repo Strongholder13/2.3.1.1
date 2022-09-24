@@ -24,7 +24,10 @@
     <td th:text="${user.surname}"/>
     <td th:text="${user.age}"/>
     <td> <a th:href="@{/edit(id=${user.id})}">Update</a></td>
-    <td> <a th:href="@{/delete(id=${user.id})}">Delete</a></td>
+    <td> <a th:method="Del" th:href="@{/delete(id=${user.id})}">Delete</a></td>
+    <td><a th:method="Del" th:href="@{/delete/{id}(id=${user.id})}"
+       class="btn btn-danger">Delete</a></td>
+
 
   </tbody>
 </table>

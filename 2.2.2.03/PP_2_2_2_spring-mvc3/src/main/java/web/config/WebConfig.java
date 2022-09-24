@@ -11,6 +11,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,6 +23,7 @@ import web.model.User;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.logging.Filter;
 
 @Configuration
 @EnableWebMvc
@@ -44,6 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/pages/");
         templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
 
@@ -55,11 +59,12 @@ public class WebConfig implements WebMvcConfigurer {
         return templateEngine;
     }
 
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine());
-        registry.viewResolver(resolver);
+    @Bean
+    public ViewResolver viewResolver(){
+        ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
+        thymeleafViewResolver.setTemplateEngine(templateEngine());
+        thymeleafViewResolver.setCharacterEncoding("UTF-8");
+        return thymeleafViewResolver;
     }
 
     @Bean
@@ -80,6 +85,7 @@ public class WebConfig implements WebMvcConfigurer {
         Properties props=new Properties();
         props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
         factoryBean.setHibernateProperties(props);
         factoryBean.setAnnotatedClasses(User.class);
@@ -92,4 +98,6 @@ public class WebConfig implements WebMvcConfigurer {
         transactionManager.setSessionFactory(getSessionFactory().getObject());
         return transactionManager;
     }
+
+
 }
