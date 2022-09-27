@@ -40,9 +40,9 @@ public class UserDAOImp implements UserDAO {
         return user;
     }
 
-    @Override
-    public void deleteUser(User user) {
-        entityManager.remove(user);
+    public void deleteUser(int id) {
+        User user = this.entityManager.find(User.class, id);
+        this.entityManager.remove(user);
     }
-
 }
+

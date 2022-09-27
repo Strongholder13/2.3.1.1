@@ -1,7 +1,6 @@
 package web.service;
 
 
-import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
 import java.util.List;
@@ -15,6 +14,6 @@ public interface UserService {
 
     User findById(int id);
 
-    void delete(User user);
+    void delete(int id);
 
 }
