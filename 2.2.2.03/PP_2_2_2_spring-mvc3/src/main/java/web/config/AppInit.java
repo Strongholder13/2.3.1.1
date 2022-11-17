@@ -26,14 +26,11 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
 
     @Override
     protected Filter[] getServletFilters() {
-        Filter[] filters;
-        CharacterEncodingFilter encFilter;
-        HiddenHttpMethodFilter httpMethodFilter = new HiddenHttpMethodFilter();
-        encFilter = new CharacterEncodingFilter();
+        CharacterEncodingFilter encFilter = new CharacterEncodingFilter();
         encFilter.setEncoding("UTF-8");
         encFilter.setForceEncoding(true);
-        filters = new Filter[] {httpMethodFilter, encFilter};
-        return filters;
+        return new Filter[] {encFilter};
     }
+
 
 }

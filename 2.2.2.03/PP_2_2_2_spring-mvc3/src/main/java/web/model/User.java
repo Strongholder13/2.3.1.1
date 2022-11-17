@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user2")
 public class User {
 
     @Id
